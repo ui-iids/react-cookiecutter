@@ -1,0 +1,45 @@
+name: Sonarqube Main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch: # Optional: Allow manual triggering
+
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Show runner IP and SonarQube DNS resolution
+        run: |
+          echo "== Public IP of this GitHub Actions runner =="
+          curl -s https://api.ipify.org
+          echo
+          echo
+          echo "== DNS resolution for sonarqube.k8s-dev.hpc.uidaho.edu =="
+          dig +short sonarqube.k8s-dev.hpc.uidaho.edu A
+          dig +short sonarqube.k8s-dev.hpc.uidaho.edu AAAA || true
+          echo
+          echo "== Reverse DNS for resolved IPv4 addresses =="
+          for ip in $(dig +short sonarqube.k8s-dev.hpc.uidaho.edu A); do
+            echo -n "$ip -> "
+            dig +short -x $ip || true
+          done
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: SonarSource/sonarqube-quality-gate-action@v1
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
