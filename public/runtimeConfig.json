@@ -1,0 +1,6 @@
+{
+    "keycloakClientID": "project-name",
+    "keycloakUrl": "https://auth.k8s-dev.hpc.uidaho.edu",
+    "keycloakRealm": "default",
+    "gatewayUrl": "https://example-backend.k8s-dev.hpc.uidaho.edu"
+}
