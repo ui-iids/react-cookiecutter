@@ -6,7 +6,8 @@ import * as TanStackQueryProvider from './integrations/tanstack-query/root-provi
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
-import type Keycloak from "keycloak-js"
+import type Keycloak from 'keycloak-js'
+import { StrictMode } from 'react'
 import { AuthProvider, useAuth } from './auth.tsx'
 import reportWebVitals from './reportWebVitals.ts'
 import { RuntimeConfigProvider, useRuntimeConfig } from './runtimeConfig.tsx'
@@ -19,8 +20,13 @@ const router = createRouter({
   routeTree,
   context: {
     ...TanStackQueryProviderContext,
-    auth: {keycloak: {} as any as Keycloak},
-    runtimeConfig: {keycloakUrl: "", keycloakClientID: "", keycloakRealm: "", gatewayUrl: ""},
+    auth: { keycloak: {} as any as Keycloak },
+    runtimeConfig: {
+      keycloakUrl: '',
+      keycloakClientID: '',
+      keycloakRealm: '',
+      gatewayUrl: '',
+    },
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -38,7 +44,12 @@ declare module '@tanstack/react-router' {
 function InnerApp() {
   const auth = useAuth()
   const runtimeConfig = useRuntimeConfig()
-  return <RouterProvider router={router} context={{auth, runtimeConfig, ...TanStackQueryProviderContext}}/>
+  return (
+    <RouterProvider
+      router={router}
+      context={{ auth, runtimeConfig, ...TanStackQueryProviderContext }}
+    />
+  )
 }
 
 // Render the app
@@ -46,13 +57,15 @@ const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
+    <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
         <RuntimeConfigProvider>
-        <AuthProvider>
-          <InnerApp/>
-        </AuthProvider>
+          <AuthProvider>
+            <InnerApp />
+          </AuthProvider>
         </RuntimeConfigProvider>
-      </TanStackQueryProvider.Provider>,
+      </TanStackQueryProvider.Provider>
+    </StrictMode>,
   )
 }
 
