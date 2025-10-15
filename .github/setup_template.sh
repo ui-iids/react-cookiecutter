@@ -16,15 +16,15 @@ echo "Description: $description";
 
 echo "Renaming project..."
 
-original_author="ui-iids"
-original_name="OAUTH_REACT_EXAMPLE"
-original_dash_name="oauth-react-example"
-original_urlname="oauth-react-example"
-original_description="oauth_react_example created by ui-iids"
+original_author="author_name"
+original_name="project_name"
+original_dash_name="project-name"
+original_urlname="project_urlname"
+original_description="project_description"
 
 # Convert underscores to dashes, and upper to lowercase
 dash_name=$(echo $name | tr '[:upper:]' '[:lower:]' | tr '_' '-')
-underscore_name=$(echo $name | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+underscore_name=$(echo $name | tr '[:upper:]' '[:lower:]' | tr '-' '_')
 # for filename in $(find . -name "*.*") 
 for filename in $(git ls-files) 
 do
@@ -36,7 +36,6 @@ do
     echo "Renamed $filename"
 done
 
-mv OAUTH_REACT_EXAMPLE $underscore_name
 mv -f project_templates/* .
 
 # This command runs only once on GHA!
