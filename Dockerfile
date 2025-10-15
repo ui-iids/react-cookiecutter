@@ -6,6 +6,7 @@ COPY package.json pnpm-lock.yaml* ./
 RUN npm install -g pnpm && pnpm install
 
 COPY . .
+ENV NODE_ENV=PRODUCTION
 RUN pnpm run build
 
 FROM nginx:alpine AS runtime

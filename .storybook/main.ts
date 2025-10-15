@@ -1,39 +1,17 @@
-import type { StorybookConfig } from '@storybook/react-vite';
-import tanstackRouter from '@tanstack/router-plugin/vite';
-import path, { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const dirname =
-  typeof __dirname !== 'undefined'
-    ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url))
+import type { StorybookConfig } from '@storybook/react-vite'
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-  ],
-  "addons": [
-    "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-vitest"
-  ],
-  "framework": {
-    "name": "@storybook/react-vite",
-    "options": {}
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: [],
+  framework: {
+    name: '@storybook/react-vite',
+    options: {},
   },
-  "viteFinal": async (config) => {
-    config.resolve = config.resolve ?? {}
-    config.resolve.alias = {
-      ...(config.resolve.alias ?? {}),
-      '@': resolve(dirname, '../src'),   // 👈 same alias as in your app
-    }
-    config.plugins = [
-      ...(config.plugins ?? []),
-      tanstackRouter(),
-    ]
-    return config;
-  }
-};
-export default config;
+  async viteFinal(config) {
+    const { default: tailwindcss } = await import('@tailwindcss/vite')
+    config.plugins = config.plugins || []
+    config.plugins.push(tailwindcss())
+    return config
+  },
+}
+export default config
