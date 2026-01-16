@@ -1,6 +1,8 @@
-Welcome to your new TanStack app! 
+This is the UI IIDS React Cookiecutter.
 
-# Getting Started
+To use it, click the "Use this template" button on Github, or create a new project within `ui-iids` which uses it as a template.
+
+# Development
 
 To run this application:
 
@@ -9,13 +11,6 @@ pnpm install
 pnpm start
 ```
 
-# Building For Production
-
-To build this application for production:
-
-```bash
-pnpm build
-```
 
 ## Testing
 
