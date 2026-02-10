@@ -2,6 +2,10 @@ name: Rename the project from template
 
 on: [push]
 
+concurrency:
+  group: setup-template
+  cancel-in-progress: true
+
 permissions: write-all
 
 jobs:
